@@ -7,10 +7,12 @@ from datetime import date, datetime, time, timezone
 
 from typing import List, Dict, Union
 
+from pythontradingbot.portfolio import Portfolio
+
 
 class PyRobot():
 
-    def __init__(self, client_id: str, redirect_uri: str, credentials_path: str = None, trading_account: str = None) -> None:
+    def __init__(self, client_id: str, redirect_uri: str, credentials_path: str = None, trading_account: str = None, paper_trading: bool = True) -> None:
         """[summary]
 
         Args:
@@ -28,6 +30,7 @@ class PyRobot():
         self.trades: dict = {}
         self.historical_prices: dict = {}
         self.stock_frame = None
+        self.paper_trading = paper_trading
 
     def _create_session(self) -> TDClient:
 
@@ -79,13 +82,27 @@ class PyRobot():
             return False
 
     def create_portfolio(self):
-        pass
+        
+        # Initialize a new Portfolio object
+        self.portfolio = Portfolio(account_number=self.trading_account)
+
+        # Assign the client 
+        self.portfolio.td_client = self.sessions
+
+        return self.portfolio
 
     def create_trade(self):
         pass
 
     def grab_current_quotes(self) -> dict:
-        pass
+
+        # First grab all the symbols.
+        symbols = self.portfolio.positions.keys()
+
+        # Grab the quotes.
+        quotes = self.sessions.get_quotes(instruments=list(symbols))
+
+        return quotes
 
     def grab_historical_prices(self) -> List[Dict]:
         pass

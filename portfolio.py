@@ -1,5 +1,7 @@
 from typing import List, Dict, Tuple, Union, Optional
 
+from td.client import TDClient
+
 class Portfolio():
 
     def __init__(self, account_number: Optional[str]):
@@ -10,6 +12,7 @@ class Portfolio():
         self.profit_loss = 0.0
         self.risk_tolerance = 0.0
         self.account_number = account_number
+        self._td_client: TDClient = None
 
     def add_position(self, symbol: str, assest_type: str, purchase_date: Optional[str], quantity: int = 0, purchase_price: float = 0.0) -> dict:
 
@@ -49,6 +52,29 @@ class Portfolio():
             return (True, "{Symbol} was successfully removed.".format(symbol=symbol))
         else:
             return (False, "{Symbol} did not exist in the portfolio.".format(symbol=symbol))
+
+
+    
+    @property
+    def td_client(self) -> TDClient:
+        """Gets the TDClient object for the Portfolio
+        Returns:
+        ----
+        {TDClient} -- An authenticated session with the TD API.
+        """
+
+        return self._td_client
+
+    @td_client.setter
+    def td_client(self, td_client: TDClient) -> None:
+        """Sets the TDClient object for the Portfolio
+        Arguments:
+        ----
+        td_client {TDClient} -- An authenticated session with the TD API.
+        """
+
+        self._td_client: TDClient = td_client
+
 
     def total_allocation(self):
         pass

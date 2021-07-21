@@ -8,7 +8,7 @@ from pandas.core.frame import DataFrame
 
 from pythontradingbot.stock_frame import StockFrame
 
-class Indicator():
+class Indicators():
 
     def __init__(self, price_data_frame: StockFrame) -> None:
         
