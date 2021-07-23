@@ -84,3 +84,53 @@ else:
 # Grab the current quotes in our portfolio
 current_quotes = trading_robot.grab_current_quotes()
 pprint.pprint(current_quotes)
+
+# Define our date range
+end_date = datetime.today()
+start_date = end_date - timedelta(days=30)
+
+# Grab the historical prices
+historical_prices = trading_robot.grab_historical_prices(
+    start=start_date,
+    end=end_date,
+    bar_size=1,
+    bar_type='minute'
+)
+
+# Convert the data into a StockFrame
+stock_frame = trading_robot.create_stock_frame(data=historical_prices['aggregated'])
+
+# Print the head of the StockFrame
+pprint.pprint(stock_frame.frame.head(n=20))
+
+# Create a new Trade object
+new_trade = trading_robot.create_trade(
+    trade_id='long_msft',
+    enter_or_exit='enter',
+    long_or_short='long',
+    order_type='lmt',
+    price=150.00
+)
+
+# Make it good til cancel
+new_trade.good_til_cancel(cancel_time=datetime.now())
+
+# Change the session
+new_trade.modify_session(session='am')
+
+# Add an order leg
+new_trade.instrument(
+    symbol='MSFT',
+    quantity=2,
+    asset_type='EQUITY'
+)
+
+# Add a stop loss
+new_trade.add_stop_loss(
+    stop_size=.10,
+    percentage=False
+)
+
+# Print out the order
+pprint,pprint(new_trade.order)
+

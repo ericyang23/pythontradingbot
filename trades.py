@@ -17,7 +17,7 @@ class Trade():
         self._triggered_added = False
         self._multi_leg = False
 
-    def new_trade(self, trade_id: str, order_type: str, side: str, enter_or_exit: str, price: float = 0.00, stop_limit_price: float = 0.00) -> dict:
+    def new_trade(self, trade_id: str, order_type: str, side: str, long_or_short: str, enter_or_exit: str, price: float = 0.00, stop_limit_price: float = 0.00) -> dict:
 
         self.trad_id = trade_id
 
@@ -47,7 +47,7 @@ class Trade():
             "duration": "DAY",
             "orderLegCollection": [
                 {
-                    "instruction": self.order_instructions[enter_or_exit][side],
+                    "instruction": self.order_instructions[enter_or_exit][long_or_short],
                     "quantity": 0,
                     "instrument": {
                         "symbol": None,
@@ -74,7 +74,7 @@ class Trade():
             self.order['stopType'] = 'STANDARD'
 
         self.enter_or_exit = enter_or_exit
-        self.side = side
+        self.side = long_or_short
         self.order_type = order_type
         self.price = price
 
