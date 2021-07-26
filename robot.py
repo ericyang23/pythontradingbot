@@ -119,7 +119,7 @@ class PyRobot():
             stop_limit_price=stop_limit_price
         )
 
-        self.trdaes[trade_id] = trade
+        self.trades[trade_id] = trade
 
         return trade
 
@@ -196,7 +196,7 @@ class PyRobot():
             try:
 
                 # Grab the request.
-                historical_prices_response = self.session.get_price_history(
+                historical_prices_response = self.sessions.get_price_history(
                     symbol=symbol,
                     period_type='day',
                     start_date=start,
@@ -211,7 +211,7 @@ class PyRobot():
                 time_true.sleep(2)
 
                 # Grab the request.
-                historical_prices_response = self.session.get_price_history(
+                historical_prices_response = self.sessions.get_price_history(
                     symbol=symbol,
                     period_type='day',
                     start_date=start,
